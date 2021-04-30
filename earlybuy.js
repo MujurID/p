@@ -66,7 +66,7 @@ factory.on('PairCreated', async (token0, token1, pairAddress) => {
     return;
   }
 
-  const amountIn = ethers.utils.parseUnits('0.001', 'ether'); //jumalh beli pakai WBNB
+  const amountIn = ethers.utils.parseUnits('0.003', 'ether'); //jumalh beli pakai WBNB
 try {
   
   const amounts = await router.getAmountsOut(amountIn, [tokenIn, tokenOut]); 
@@ -102,14 +102,30 @@ try {
   console.log('BUYING');
   
   //HAPUS KOMEN KALO MAU AKTIFIN BUY
-  await tx.wait();
-  const receipt = await tx.wait();
-  console.log(`tx: https://www.bscscan.com/tx/${receipt.logs[1].transactionHash}`);
+ //const receipt = await tx.wait();
+// console.log(`tx: https://www.bscscan.com/tx/${receipt.logs[1].transactionHash}`);
   
-  
-  
-  console.log(receipt);
-  process.exit(); //ilangin klo gamau trus2an cari token baru
+const tokennya = new ethers.Contract(
+  tokenOut,
+   ['function approve(address spender, uint256 amount) external returns (bool)'],
+   account
+);  
+
+const approve = await tokennya.approve(
+    addresses.router, //pancakerouter
+    ethers.constants.MaxUint256, //max approve
+    {
+        'gasLimit': 300000,
+        'gasPrice': ethers.utils.parseUnits('5', 'gwei'),
+    }
+  );
+
+     //HAPUS KOMEN KALO MAU AKTIFIN APPROVE
+  //const approvereceipt = await approve.wait();
+  //console.log(`approve tx: https://bscscan.com/tx/${approvereceipt.logs[1].transactionHash}`); //gamuncul kenapa?? w ga pro nodejs
+  console.log('Nunggu token baru...');
+  process.exit(); //panik mode, kasih komen biar jalan trus
+    
   }
   
 } catch(error) { 
