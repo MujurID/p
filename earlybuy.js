@@ -66,7 +66,7 @@ factory.on('PairCreated', async (token0, token1, pairAddress) => {
     return;
   }
 
-  const amountIn = ethers.utils.parseUnits('0.003', 'ether'); //jumalh beli pakai WBNB
+  const amountIn = ethers.utils.parseUnits('0.001', 'ether'); //jumalh beli pakai WBNB
 try {
   
   const amounts = await router.getAmountsOut(amountIn, [tokenIn, tokenOut]); 
@@ -102,14 +102,14 @@ try {
   console.log('BUYING');
   
   //HAPUS KOMEN KALO MAU AKTIFIN BUY
-  //await tx.wait();
- //const receipt = await tx.wait();
-// console.log(`tx: https://www.bscscan.com/tx/${receipt.logs[1].transactionHash}`);
+  await tx.wait();
+  const receipt = await tx.wait();
+  console.log(`tx: https://www.bscscan.com/tx/${receipt.logs[1].transactionHash}`);
   
   
   
-// console.log(receipt);
- // process.exit(); ilangin klo gamau trus2an cari token baru
+  console.log(receipt);
+  process.exit(); //ilangin klo gamau trus2an cari token baru
   }
   
 } catch(error) { 
